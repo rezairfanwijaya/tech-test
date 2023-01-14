@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"telkom-tect-test/6.shopping-cart/connection"
@@ -23,13 +22,10 @@ func main() {
 		"dbName":     dbName,
 	}
 
-	db, err := connection.Connection(mapEnv)
+	_, err := connection.Connection(mapEnv)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	log.Println("connected : ", db)
-
-	fmt.Println("hallo world")
 }
