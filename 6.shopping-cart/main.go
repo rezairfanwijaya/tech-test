@@ -4,6 +4,9 @@ import (
 	"log"
 	"os"
 	"telkom-tect-test/6.shopping-cart/connection"
+	"telkom-tect-test/6.shopping-cart/route"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -22,10 +25,20 @@ func main() {
 		"dbName":     dbName,
 	}
 
-	_, err := connection.Connection(mapEnv)
+	db, err := connection.Connection(mapEnv)
 	if err != nil {
 		log.Fatal(err)
 		return
+	}
+
+	// intial gin
+	r := gin.Default()
+
+	// new route
+	route.NewRoute(db, r)
+
+	if err := r.Run(":8686"); err != nil {
+		log.Fatal(err.Error())
 	}
 
 }
