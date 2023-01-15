@@ -25,6 +25,8 @@ type productResponse struct {
 	Quantity    int    `json:"quantity"`
 }
 
+type ResponseNil struct{}
+
 func FormatProduct(product product.Product) productResponse {
 	return productResponse{
 		ProductCode: product.ProductCode,
