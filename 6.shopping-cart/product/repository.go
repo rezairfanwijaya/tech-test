@@ -7,8 +7,12 @@ type IRepository interface {
 	Save(product Product) (Product, error)
 	Update(product Product) (Product, error)
 	FindByProducCodeAndProductName(productCode, productName string) (Product, error)
-	FindByProducCode(productCode string) (Product, error)
+	FindByProducNameAndProductQuantity(productName string, productQuantity int) ([]Product, error)
+	FindByProductCode(productCode string) (Product, error)
+	FindByProductName(productName string) ([]Product, error)
+	FindByProductQuantity(productQuantity int) ([]Product, error)
 	DeleteByProductCode(productCode string) error
+	FindAll() ([]Product, error)
 }
 
 // struct untuk dependency dan set method
@@ -48,7 +52,37 @@ func (r *Repository) FindByProducCodeAndProductName(productCode, productName str
 	return product, nil
 }
 
-func (r *Repository) FindByProducCode(productCode string) (Product, error) {
+func (r *Repository) FindByProductName(productName string) ([]Product, error) {
+	var product []Product
+
+	if err := r.db.Where("product_name = ?", productName).Find(&product).Error; err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *Repository) FindByProductQuantity(productQuantity int) ([]Product, error) {
+	var product []Product
+
+	if err := r.db.Where("quantity = ?", productQuantity).Find(&product).Error; err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *Repository) FindByProducNameAndProductQuantity(productName string, productQuantity int) ([]Product, error) {
+	var product []Product
+
+	if err := r.db.Where("product_name = ? and quantity = ?", productName, productQuantity).Find(&product).Error; err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *Repository) FindByProductCode(productCode string) (Product, error) {
 	var product Product
 
 	if err := r.db.Where("product_code = ?", productCode).Find(&product).Error; err != nil {
@@ -66,4 +100,14 @@ func (r *Repository) DeleteByProductCode(productCode string) error {
 	}
 
 	return nil
+}
+
+func (r *Repository) FindAll() ([]Product, error) {
+	var product []Product
+
+	if err := r.db.Find(&product).Error; err != nil {
+		return product, err
+	}
+
+	return product, nil
 }
