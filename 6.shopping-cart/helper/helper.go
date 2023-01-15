@@ -35,6 +35,17 @@ func FormatProduct(product product.Product) productResponse {
 	}
 }
 
+func FormatProducts(products []product.Product) []productResponse {
+	var result []productResponse
+
+	for _, product := range products {
+		singleProductFormated := FormatProduct(product)
+		result = append(result, singleProductFormated)
+	}
+
+	return result
+}
+
 func SetResponseAPI(status, message string, code int, data interface{}) responseAPI {
 	meta := meta{
 		Status:  status,
