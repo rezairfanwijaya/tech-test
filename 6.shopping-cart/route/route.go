@@ -17,4 +17,5 @@ func NewRoute(db *gorm.DB, route *gin.Engine) {
 	hanlderProduct := handler.NewHandlerProduct(serviceProduct)
 
 	route.POST("/product", hanlderProduct.CreateNewProduct)
+	route.DELETE("/product", hanlderProduct.DeleteByProductCode)
 }
