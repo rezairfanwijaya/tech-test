@@ -59,3 +59,43 @@ func (h *productHandler) CreateNewProduct(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, response)
 }
+
+func (h *productHandler) DeleteByProductCode(c *gin.Context) {
+	var input product.DeleteProductInput
+
+	// binding
+	if err := c.ShouldBindJSON(&input); err != nil {
+		errMsg := helper.SetErrorBinding(err)
+		response := helper.SetResponseAPI(
+			"failed",
+			"failed to delete product",
+			http.StatusBadRequest,
+			errMsg,
+		)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// panggil service
+	if err := h.serviceProduct.Delete(input); err != nil {
+		response := helper.SetResponseAPI(
+			"failed",
+			"failed to delete product",
+			http.StatusNotFound,
+			err.Error(),
+		)
+
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	response := helper.SetResponseAPI(
+		"success",
+		"success delete product",
+		http.StatusOK,
+		helper.ResponseNil{},
+	)
+
+	c.JSON(http.StatusOK, response)
+}
