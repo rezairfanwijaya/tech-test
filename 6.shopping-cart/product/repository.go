@@ -7,6 +7,8 @@ type IRepository interface {
 	Save(product Product) (Product, error)
 	Update(product Product) (Product, error)
 	FindByProducCodeAndProductName(productCode, productName string) (Product, error)
+	FindByProducCode(productCode string) (Product, error)
+	DeleteByProductCode(productCode string) error
 }
 
 // struct untuk dependency dan set method
@@ -44,4 +46,24 @@ func (r *Repository) FindByProducCodeAndProductName(productCode, productName str
 	}
 
 	return product, nil
+}
+
+func (r *Repository) FindByProducCode(productCode string) (Product, error) {
+	var product Product
+
+	if err := r.db.Where("product_code = ?", productCode).Find(&product).Error; err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *Repository) DeleteByProductCode(productCode string) error {
+	var product Product
+
+	if err := r.db.Where("product_code = ?", productCode).Delete(&product).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
