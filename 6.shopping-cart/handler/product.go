@@ -99,3 +99,37 @@ func (h *productHandler) DeleteByProductCode(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *productHandler) GetAllProduct(c *gin.Context) {
+	// ambil query params
+	productName := c.Query("name")
+	productQuantity := c.Query("quantity")
+
+	mapParams := map[string]string{
+		"product_name":     productName,
+		"product_quantity": productQuantity,
+	}
+
+	// panggil service
+	products, httpCode, err := h.serviceProduct.GetAll(mapParams)
+	if err != nil {
+		response := helper.SetResponseAPI(
+			"failed",
+			"failed to get product",
+			httpCode,
+			err.Error(),
+		)
+
+		c.JSON(httpCode, response)
+		return
+	}
+
+	response := helper.SetResponseAPI(
+		"success",
+		"success get product",
+		httpCode,
+		helper.FormatProducts(products),
+	)
+
+	c.JSON(httpCode, response)
+}
