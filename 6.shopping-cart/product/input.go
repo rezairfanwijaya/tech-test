@@ -5,3 +5,7 @@ type ProductInput struct {
 	ProductName string `json:"product_name" binding:"required"`
 	Quantity    int    `json:"quantity" binding:"required,min=1"`
 }
+
+type DeleteProductInput struct {
+	ProductCode string `json:"product_code" binding:"required"`
+}
