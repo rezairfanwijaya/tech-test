@@ -1,11 +1,13 @@
 package helper
 
 import (
+	"errors"
 	"fmt"
 
 	"telkom-tect-test/6.shopping-cart/product"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 )
 
 type responseAPI struct {
@@ -68,4 +70,15 @@ func SetErrorBinding(err error) []string {
 	}
 
 	return errBinding
+}
+
+func GetEnv(path string) (map[string]string, error) {
+	env, err := godotenv.Read(path)
+
+	if err != nil {
+		errMsg := fmt.Sprintf("ERR GET ENV : %v", err)
+		return env, errors.New(errMsg)
+	}
+
+	return env, nil
 }

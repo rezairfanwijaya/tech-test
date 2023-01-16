@@ -4,19 +4,25 @@ import (
 	"errors"
 	"fmt"
 
+	"telkom-tect-test/6.shopping-cart/helper"
 	"telkom-tect-test/6.shopping-cart/product"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func Connection(env map[string]string) (*gorm.DB, error) {
-	// ammbil value env
-	dbUsername := env["dbUsername"]
-	dbPassword := env["dbPassword"]
-	dbHost := env["dbHost"]
-	dbPort := env["dbPort"]
-	dbName := env["dbName"]
+func Connection(path string) (*gorm.DB, error) {
+	// ammbil env
+	env, err := helper.GetEnv(path)
+	if err != nil {
+		return nil, err
+	}
+
+	dbUsername := env["DATABASE_USERNAME"]
+	dbPassword := env["DATABASE_PASSWORD"]
+	dbHost := env["DATABASE_HOST"]
+	dbPort := env["DATABASE_PORT"]
+	dbName := env["DATABASE_NAME"]
 
 	// siapkan dns
 	dsn := fmt.Sprintf("%s:%s@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", dbUsername, dbPassword, dbHost, dbPort, dbName)
