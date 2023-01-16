@@ -34,8 +34,6 @@ func changeMoney(money int) {
 		// kurangi money dengan nilai ratus ribuan
 		afterElimination := money - nilaiRatusribuan
 
-		// set response
-		// respRatusRibuan = fmt.Sprintf("Rp. 100.000 : %v", firstNumber)
 		log.Printf("Rp. %v : %v", 10000, firstNumber)
 
 		// rekursif
@@ -164,6 +162,5 @@ func getMinimumDistance(money int, fisrtNominal, secondNominal, thirdNominal int
 }
 
 func main() {
-	// log.Println(getFisrtNumber(120))
 	changeMoney(145000)
 }
